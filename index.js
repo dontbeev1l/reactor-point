@@ -31,13 +31,13 @@ class Reactor {
         let loadedCount = 0;
         const textures = [
             './img/p1.png',
-            './img/p2.png',
-            './img/p3.png',
-            './img/p4.png',
-            './img/p5.png',
-            './img/p6.png',
-            './img/p7.png',
-            './img/p8.png'
+            './img/p2.png'
+            // './img/p3.png',
+            // './img/p4.png',
+            // './img/p5.png',
+            // './img/p6.png',
+            // './img/p7.png',
+            // './img/p8.png'
         ];
 
         this.atomTextures = textures.map(src => {
@@ -49,8 +49,8 @@ class Reactor {
                 res.originalSize = { width: res.img.width, height: res.img.height };
                 if (loadedCount === textures.length) {
                     this.loaded = true;
+                    this.updateSize();
                 }
-
             }
             return res;
         });
@@ -103,11 +103,11 @@ class Reactor {
             if (!this.atomsParams) {
                 this.atomsParams = [
                     new AtomParams(this.atomTextures[0], this.elipse1, 15),
-                    new AtomParams(this.atomTextures[1], this.elipse1, 195),
-                    new AtomParams(this.atomTextures[2], this.elipse2, 15),
-                    new AtomParams(this.atomTextures[3], this.elipse2, 195),
-                    new AtomParams(this.atomTextures[4], this.elipse3, 15),
-                    new AtomParams(this.atomTextures[5], this.elipse3, 195)
+                    new AtomParams(this.atomTextures[0], this.elipse1, 195),
+                    new AtomParams(this.atomTextures[0], this.elipse2, 15),
+                    new AtomParams(this.atomTextures[0], this.elipse2, 195),
+                    new AtomParams(this.atomTextures[0], this.elipse3, 15),
+                    new AtomParams(this.atomTextures[0], this.elipse3, 195)
                 ]
             }
 
@@ -120,14 +120,6 @@ class Reactor {
 
             this.atomsParams.forEach(p => {
                 const size = this.canvasRect.width * 0.08;
-                // p.angel = rr.value;
-                if (p.angel == 90 || p.angel == 270) {
-                    p.texture = this.atomTextures[Math.round(Math.random() * (this.atomTextures.length - 0.6))];
-                }
-                if (p.angel >= 360) {
-                    p.angel = 0;
-                }
-
                 p.texture.width = size;
                 p.texture.height = size / p.texture.originalSize.width * p.texture.originalSize.height;
             })
@@ -135,30 +127,56 @@ class Reactor {
         }
     }
 
-
     spin() {
         let times = 720;
         let speed = 9;
         const spinFn = () => {
-            if (times > 0) {
-                requestAnimationFrame(() => spinFn());
-            } else {
-                this.atomsParams.forEach(p => {
-                    console.log(p.angel);
-                })
+            if (times <= 0) {
+                this.checkWin();
                 return;
             }
             times -= speed;
             this.atomsParams.forEach(p => {
                 p.angel += speed;
+                if (p.angel == 78 || p.angel === 258) {
+                    p.texture = this.atomTextures[Math.round(Math.random() * (this.atomTextures.length - 0.6))];
+                }
+
                 if (p.angel >= 360) {
                     p.angel = p.angel % 360;
                 }
             })
+            requestAnimationFrame(() => spinFn());
         }
-        
-
         spinFn();
+    }
+
+    checkWin() {
+        const row = [
+            this.atomsParams[0],
+            this.atomsParams[5],
+            this.atomsParams[3],
+            this.atomsParams[1],
+            this.atomsParams[4],
+            this.atomsParams[2]
+        ];
+
+        const check = (i, size) => {
+            const nextIndex = ((i + 1) === 6) ? 0 : (i + 1);
+            if (row[i].texture.img.src === row[nextIndex].texture.img.src && size < 6) {
+                return check(nextIndex, size + 1)
+            } else {
+                return size;
+            }
+        }
+
+        const checks = new Array(6).fill(0).map((e, i) => check(i, 0));
+        const maxNet = Math.max(...checks);
+        if (maxNet >= 3) {
+            console.log('WIN', checks.indexOf(maxNet));
+        } else {
+            console.log('LOSE', checks)
+        }
     }
 
     drowAtom(atomsParams) {
