@@ -1,5 +1,8 @@
 const canvas = document.querySelector('#canvas');
 const _2Pi = 2 * Math.PI;
+let balance = 1000;
+let bet = 50;
+
 
 class ElipseParams {
     constructor(a, b, center, rotation, color) {
@@ -154,6 +157,8 @@ class Reactor {
 
     spin() {
         if (this.locked) { return; }
+        balance -= bet;
+        updateBalance();
         this.locked = true;
         this.updateWinCef(1);
         let times = 720;
@@ -211,7 +216,14 @@ class Reactor {
             for (let i = maxNetStartIndex; i < maxNetStartIndex + maxNet; i++) {
                 row[i % 6].hilight = this.hilightWinTexture;
             }
+
+
+            balance += bet * maxNet;
+
+            updateBalance();
+
             this.updateWinCef(this.winCoef + 1);
+            
             setTimeout(() => {
                 for (let i = maxNetStartIndex; i < maxNetStartIndex + maxNet; i++) {
                     row[i % 6].hilight = this.hilightTexture;
@@ -281,18 +293,18 @@ class Reactor {
 
 }
 
-
 const reactor = new Reactor(canvas);
-
-
-let balance = 1000;
-let bet = 50;
-
 
 function updateBet() {
     document.querySelector('.bet span').innerHTML = bet;
 }
+
+function updateBalance() {
+    document.querySelector('.balace span').innerHTML = balance;
+}
+
 updateBet();
+updateBalance();
 
 function betPlus() {
     bet += 50;
