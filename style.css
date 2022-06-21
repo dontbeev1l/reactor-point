@@ -138,3 +138,47 @@ canvas {
     justify-content: center;
     padding: 0 10px;
 }
+
+.home {
+    position: fixed;
+    height: 11.6vw;
+    top: 1vh;
+    left: 1.5vw;
+}
+
+
+.bonus-row {
+    position: fixed;
+    bottom: 26vh;
+    color: #fff;
+    font-size: 5vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+}
+
+
+.bonus-btn {
+    width: 16.6vw;
+    height: 8vw;
+    background: url('./img/button.png');
+    text-align: center;
+    background-size: cover;
+    line-height: 8vw;
+    font-size: 3vw;
+    position: relative;
+}
+
+.bonus-btn:first-child {
+    margin-right: 13vw;
+}
+
+.bonus-btn img {
+    height: 10vw;
+    left: 0;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    position: absolute;
+}

@@ -2,6 +2,8 @@ const canvas = document.querySelector('#canvas');
 const _2Pi = 2 * Math.PI;
 let balance = 1000;
 let bet = 50;
+let saveCoefBonus = 5;
+let bonus2 = 3;
 
 
 class ElipseParams {
@@ -41,7 +43,7 @@ class Reactor {
         const textures = [
             './img/p1.png',
             './img/p2.png',
-            './img/p3.png',
+            // './img/p3.png',
             // './img/p4.png',
             // './img/p5.png'
             // './img/p6.png',
@@ -160,7 +162,11 @@ class Reactor {
         balance -= bet;
         updateBalance();
         this.locked = true;
-        this.updateWinCef(1);
+        if (!this.bonus1) {
+            this.updateWinCef(1);
+        } else {
+            this.bonus1 = false;
+        }
         let times = 720;
         let speed = 9;
 
@@ -223,7 +229,7 @@ class Reactor {
             updateBalance();
 
             this.updateWinCef(this.winCoef + 1);
-            
+
             setTimeout(() => {
                 for (let i = maxNetStartIndex; i < maxNetStartIndex + maxNet; i++) {
                     row[i % 6].hilight = this.hilightTexture;
@@ -295,6 +301,24 @@ class Reactor {
 
 const reactor = new Reactor(canvas);
 
+
+function bonus1Activate() {
+    if (reactor.bonus1) {
+        return;
+    }
+    if (saveCoefBonus > 0) {
+        saveCoefBonus--;
+        updateBonuses();
+    }
+    reactor.bonus1 = true;
+}
+
+function updateBonuses() {
+
+    document.querySelectorAll('.bonus-btn span')[0].innerHTML = saveCoefBonus;
+    document.querySelectorAll('.bonus-btn span')[1].innerHTML = bonus2;
+}
+
 function updateBet() {
     document.querySelector('.bet span').innerHTML = bet;
 }
@@ -305,6 +329,7 @@ function updateBalance() {
 
 updateBet();
 updateBalance();
+updateBonuses();
 
 function betPlus() {
     bet += 50;
