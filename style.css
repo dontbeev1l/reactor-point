@@ -1,9 +1,17 @@
+* {
+    font-family: 'Nokora', sans-serif;;
+}
+
 .wrapper {
     position: fixed;
-    top: 0;
     left: 0;
+    top: 0;
     width: 100vw;
     height: 100vh;
+    background: url('./img/bg.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 
 canvas {
@@ -12,6 +20,7 @@ canvas {
 }
 
 .cavnas_wrapper {
+    top: 4vh;
     position: relative;
 }
 
@@ -27,5 +36,105 @@ canvas {
     line-height: 20vw;
     color: #fff;
     font-size: 10vw;
-    font-family: 'Nokora', sans-serif;
+    z-index: 3;
+}
+
+.x_coef_active {
+    background-image: url('./img/x_bg_win.png');
+}
+
+
+
+@keyframes salutAnimation {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+.salut {
+    position: absolute;
+    left: calc(50% - 30vw);
+    top: calc(50% - 30vw);
+    width: 60vw;
+    height: 60vw;
+    background: url('./img/salut.png');
+    background-size: cover;
+    text-align: center;
+    z-index: -1;
+    opacity: 0;
+    animation: salutAnimation 900ms linear infinite;
+}
+
+.x_coef_active + .salut {
+    opacity: 1;
+    transition: opacity 300ms ease;
+}
+
+.roll_btn {
+    position: fixed;
+    bottom: 9.4vh;
+    width: 28vw;
+    left: 36vw;
+}
+
+.arr {
+    position: fixed;
+    bottom: 2vh;
+    width: 14vw;
+    cursor: pointer;
+}
+
+.arr_l {
+    left: 1.5vw;
+}
+
+.arr_r {
+    right: 1.5vw;
+}
+
+.bet {
+    position: fixed;
+    bottom: 2vh;
+    width: 64vw;
+    left: 17vw;
+    background-image: url('./img/bet_bg.png');
+    height: 11.6vw;
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    background-repeat: no-repeat;
+    line-height: 11.6vw;
+    text-align: center;
+    font-size: 5vw;
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.bet img, .balace img {
+    margin-left: 10px;
+}
+
+
+.balace {
+    position: fixed;
+    background-image: url('./img/bet_bg.png');
+    background-position: center;
+    border-radius: 12px;
+    background-repeat: no-repeat;
+    height: 11.6vw;
+    top: 1vh;
+    right: 1.5vw;
+    font-size: 5vw;
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
 }

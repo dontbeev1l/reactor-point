@@ -39,8 +39,8 @@ class Reactor {
             './img/p1.png',
             './img/p2.png',
             './img/p3.png',
-            './img/p4.png',
-            './img/p5.png'
+            // './img/p4.png',
+            // './img/p5.png'
             // './img/p6.png',
             // './img/p7.png',
             // './img/p8.png'
@@ -144,6 +144,12 @@ class Reactor {
             this.winCoef = value;
         }
         xCoefDiv.innerHTML = `x${this.winCoef}`;
+
+        if (this.winCoef > 1) {
+            xCoefDiv.classList.add('x_coef_active')
+        } else {
+            xCoefDiv.classList.remove('x_coef_active')
+        }
     }
 
     spin() {
@@ -277,6 +283,36 @@ class Reactor {
 
 
 const reactor = new Reactor(canvas);
+
+
+let balance = 1000;
+let bet = 50;
+
+
+function updateBet() {
+    document.querySelector('.bet span').innerHTML = bet;
+}
+updateBet();
+
+function betPlus() {
+    bet += 50;
+    if (bet > balance) {
+        bet = balance;
+    }
+    if (balance < 50) {
+        balance = 1000;
+    }
+    updateBet();
+}
+
+function betMinus() {
+    bet -= 50;
+    if (bet <= 0) {
+        bet = 50;
+    }
+    updateBet();
+}
+
 
 function rollRaund() {
     reactor.spin()

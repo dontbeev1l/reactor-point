@@ -17,9 +17,27 @@
     <div class="wrapper">
         <div class="cavnas_wrapper">
             <canvas id="canvas"></canvas>
-            <div class="x_coef" id="xCoefDiv"></div>
+            <div class="x_coef" id="xCoefDiv">x1
+            </div>
+            <div class="salut"></div>
+
         </div>
-        <button onclick="rollRaund()">Roll</button>
+        <img src="./img/roll_btn.png" class="roll_btn" onclick="rollRaund()">
+
+        <img src="./img/arr_l.png"  onclick="betMinus()" class="arr arr_l">
+        <img src="./img/arr_r.png" onclick="betPlus()" class="arr arr_r">
+        <div class="bet">
+            <span>0</span>
+            <img src="./img/coin.png" alt="">
+        </div>
+
+        <div class="balace">
+            <span>
+                12312
+            </span>
+            <img src="./img/coin.png" alt="">
+
+        </div>
     </div>
 
     <script src="./index.js"></script>
