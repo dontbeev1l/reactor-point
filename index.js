@@ -27,23 +27,32 @@ class Reactor {
         this.loadTextures();
     }
 
+    createTexture(src) {
+        const img = document.createElement('img');
+        img.setAttribute('src', src);
+        return img;
+    }
+
     loadTextures() {
         let loadedCount = 0;
         const textures = [
             './img/p1.png',
-            './img/p2.png'
-            // './img/p3.png',
-            // './img/p4.png',
-            // './img/p5.png',
+            './img/p2.png',
+            './img/p3.png',
+            './img/p4.png',
+            './img/p5.png'
             // './img/p6.png',
             // './img/p7.png',
             // './img/p8.png'
         ];
 
+        this.hilightTexture = this.createTexture('./img/hilight.png');
+        this.hilightWinTexture = this.createTexture('./img/hilight_win.png');
+
+
         this.atomTextures = textures.map(src => {
             const res = {}
-            res.img = document.createElement('img');
-            res.img.setAttribute('src', src);
+            res.img = this.createTexture(src);
             res.img.onload = () => {
                 loadedCount++;
                 res.originalSize = { width: res.img.width, height: res.img.height };
@@ -124,12 +133,28 @@ class Reactor {
                 p.texture.height = size / p.texture.originalSize.width * p.texture.originalSize.height;
             })
 
+            this.hilightSize = this.canvasRect.width * 0.1;
+
         }
     }
 
+
+    updateWinCef(value) {
+        if (value) {
+            this.winCoef = value;
+        }
+        xCoefDiv.innerHTML = `x${this.winCoef}`;
+    }
+
     spin() {
+        if (this.locked) { return; }
+        this.locked = true;
+        this.updateWinCef(1);
         let times = 720;
         let speed = 9;
+
+        this.atomsParams.forEach(a => a.hilight = null);
+
         const spinFn = () => {
             if (times <= 0) {
                 this.checkWin();
@@ -170,18 +195,40 @@ class Reactor {
             }
         }
 
-        const checks = new Array(6).fill(0).map((e, i) => check(i, 0));
+        const checks = new Array(6).fill(0).map((e, i) => check(i, 1));
         const maxNet = Math.max(...checks);
+        const maxNetStartIndex = checks.indexOf(maxNet);
+
+        row.forEach((a) => a.hilight = this.hilightTexture);
+
         if (maxNet >= 3) {
-            console.log('WIN', checks.indexOf(maxNet));
+            for (let i = maxNetStartIndex; i < maxNetStartIndex + maxNet; i++) {
+                row[i % 6].hilight = this.hilightWinTexture;
+            }
+            this.updateWinCef(this.winCoef + 1);
+            setTimeout(() => {
+                for (let i = maxNetStartIndex; i < maxNetStartIndex + maxNet; i++) {
+                    row[i % 6].hilight = this.hilightTexture;
+                    row[i % 6].texture = this.atomTextures[Math.round(Math.random() * (this.atomTextures.length - 0.6))];
+                }
+                this.checkWin();
+            }, 1000);
+            console.log('WIN');
         } else {
             console.log('LOSE', checks)
+            this.locked = false;
         }
     }
 
     drowAtom(atomsParams) {
         const { texture, elipseParams, angel } = atomsParams;
         const position = this.getElipsePoint(elipseParams, angel);
+
+
+        if (atomsParams.hilight) {
+            this.ctx.drawImage(atomsParams.hilight, position.x - this.hilightSize / 2, position.y - this.hilightSize / 2, this.hilightSize, this.hilightSize);
+        }
+
         this.ctx.drawImage(texture.img, position.x - texture.width / 2, position.y - texture.height / 2, texture.width, texture.height);
     }
 

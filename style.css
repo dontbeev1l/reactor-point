@@ -10,3 +10,22 @@ canvas {
     width: 100vw;
     height: 100vw;
 }
+
+.cavnas_wrapper {
+    position: relative;
+}
+
+.x_coef {
+    position: absolute;
+    left: calc(50% - 10vw);
+    top: calc(50% - 10vw);
+    width: 20vw;
+    height: 20vw;
+    background: url('./img/x_bg.png');
+    background-size: cover;
+    text-align: center;
+    line-height: 20vw;
+    color: #fff;
+    font-size: 10vw;
+    font-family: 'Nokora', sans-serif;
+}
