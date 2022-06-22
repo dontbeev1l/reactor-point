@@ -55,14 +55,15 @@ class Reactor {
             './img/p2.png',
             './img/p3.png',
             './img/p4.png',
-            './img/p5.png',
-            './img/p6.png',
-            './img/p7.png',
-            './img/p8.png'
+            './img/p5.png'
+            // './img/p6.png',
+            // './img/p7.png',
+            // './img/p8.png'
         ];
 
         this.hilightTexture = this.createTexture('./img/hilight.png');
         this.hilightWinTexture = this.createTexture('./img/hilight_win.png');
+
 
 
         this.atomTextures = textures.map(src => {
@@ -169,6 +170,15 @@ class Reactor {
 
     spin() {
         if (this.locked) { return; }
+        if (bet > balance) {
+            bet = balance;
+            updateBet();
+        }
+
+        if (balance === 0) {
+            balance = 500;
+            updateBalance();
+        }
         balance -= bet;
         updateBalance();
         this.locked = true;
@@ -177,6 +187,8 @@ class Reactor {
         } else {
             this.bonus1 = false;
         }
+
+       
         let times = 720;
         let speed = 9;
 
@@ -191,7 +203,7 @@ class Reactor {
             this.atomsParams.forEach(p => {
                 p.angel += speed;
                 if (p.angel == 78 || p.angel === 258) {
-                    p.texture = this.atomTextures[Math.round(Math.random() * (this.atomTextures.length - 0.6))];
+                    p.texture = this.atomTextures[Math.round(Math.random() * (this.bonus2 ? 3 : this.atomTextures.length - 0.6))];
                 }
 
                 if (p.angel >= 360) {
@@ -243,7 +255,7 @@ class Reactor {
             setTimeout(() => {
                 for (let i = maxNetStartIndex; i < maxNetStartIndex + maxNet; i++) {
                     row[i % 6].hilight = this.hilightTexture;
-                    row[i % 6].texture = this.atomTextures[Math.round(Math.random() * (this.atomTextures.length - 0.6))];
+                    row[i % 6].texture = this.atomTextures[Math.round(Math.random() * (this.bonus2 ? 3 : this.atomTextures.length - 0.6))];
                 }
                 this.checkWin();
             }, 1000);
@@ -251,6 +263,7 @@ class Reactor {
         } else {
             console.log('LOSE', checks)
             this.locked = false;
+            this.bonus2 = false;
         }
     }
 
@@ -318,9 +331,19 @@ function bonus1Activate() {
     }
     if (saveCoefBonus > 0) {
         saveCoefBonus--;
+        reactor.bonus1 = true;
         updateBonuses();
     }
-    reactor.bonus1 = true;
+}
+function bonus2Activate() {
+    if (reactor.bonus2) {
+        return;
+    }
+    if (bonus2 > 0) {
+        bonus2--;
+        reactor.bonus2 = true;
+        updateBonuses();
+    }
 }
 
 function updateBonuses() {
@@ -331,6 +354,7 @@ function updateBonuses() {
 }
 
 function updateBet() {
+    if (bet == 0) { bet = 50 }
     STORE.set('bet', bet);
     document.querySelector('.bet span').innerHTML = bet;
 }
