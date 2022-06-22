@@ -1,9 +1,19 @@
+const STORE = {
+    get(key, def) {
+        return localStorage.getItem(key) || def;
+    },
+    set(key, value) {
+        localStorage.setItem(key, value)
+    }
+}
+
+
 const canvas = document.querySelector('#canvas');
 const _2Pi = 2 * Math.PI;
-let balance = 1000;
-let bet = 50;
-let saveCoefBonus = 5;
-let bonus2 = 3;
+let balance = +STORE.get('balance', 1000);
+let bet = +STORE.get('bet', 50);
+let saveCoefBonus = +STORE.get('saveCoefBonus', 1);
+let bonus2 = +STORE.get('bonus2', 1);
 
 
 class ElipseParams {
@@ -43,12 +53,12 @@ class Reactor {
         const textures = [
             './img/p1.png',
             './img/p2.png',
-            // './img/p3.png',
-            // './img/p4.png',
-            // './img/p5.png'
-            // './img/p6.png',
-            // './img/p7.png',
-            // './img/p8.png'
+            './img/p3.png',
+            './img/p4.png',
+            './img/p5.png',
+            './img/p6.png',
+            './img/p7.png',
+            './img/p8.png'
         ];
 
         this.hilightTexture = this.createTexture('./img/hilight.png');
@@ -314,17 +324,20 @@ function bonus1Activate() {
 }
 
 function updateBonuses() {
-
-    document.querySelectorAll('.bonus-btn span')[0].innerHTML = saveCoefBonus;
-    document.querySelectorAll('.bonus-btn span')[1].innerHTML = bonus2;
+    STORE.set('saveCoefBonus', saveCoefBonus);
+    STORE.set('bonus2', bonus2);
+    document.querySelectorAll('.bonus-row .bonus-btn span')[0].innerHTML = saveCoefBonus;
+    document.querySelectorAll('.bonus-row .bonus-btn span')[1].innerHTML = bonus2;
 }
 
 function updateBet() {
+    STORE.set('bet', bet);
     document.querySelector('.bet span').innerHTML = bet;
 }
 
 function updateBalance() {
-    document.querySelector('.balace span').innerHTML = balance;
+    STORE.set('balance', balance);
+    document.querySelectorAll('.balace span').forEach(e => e.innerHTML = balance);
 }
 
 updateBet();
@@ -354,3 +367,63 @@ function betMinus() {
 function rollRaund() {
     reactor.spin()
 }
+
+
+function acept() {
+    document.querySelector('.terms').classList.add('terms_hidden');
+    setTimeout(() => {
+        document.querySelector('.terms').style.display = 'none';
+    }, 300)
+}
+
+function play() {
+    document.querySelector('.menu').classList.add('terms_hidden');
+    setTimeout(() => {
+        document.querySelector('.menu').style.display = 'none';
+    }, 300)
+}
+
+function menu() {
+    try {
+        document.querySelector('.shop_active').classList.remove('shop_active');
+    } catch (e) { }
+    document.querySelector('.menu').classList.remove('terms_hidden');
+    document.querySelector('.menu').style.display = 'flex';
+}
+
+function shop() {
+    document.querySelector('.shop').classList.add('shop_active');
+}
+
+function buyBlue() {
+    if (balance < 300) { return; }
+    balance -= 300;
+    bonus2++;
+    updateBonuses();
+    updateBalance();
+}
+
+function buyYellow() {
+    if (balance < 500) { return; }
+    balance -= 500;
+    saveCoefBonus++;
+    updateBonuses();
+    updateBalance();
+}
+
+function checkRotate() {
+    requestAnimationFrame(() => checkRotate());
+
+    const a = document.querySelector('.wrapper').getBoundingClientRect().width / document.querySelector('.wrapper').getBoundingClientRect().height;
+
+    try {
+
+        if (a > 0.8) {
+            document.querySelector('.rotatescreent').style.display = 'flex';
+        } else {
+            document.querySelector('.rotatescreent').style.display = 'none';
+        }
+    } catch (e) { }
+}
+
+checkRotate();

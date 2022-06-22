@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nokora:wght@700&display=swap" rel="stylesheet">
@@ -24,15 +24,82 @@
         </div>
         <img src="./img/roll_btn.png" class="roll_btn" onclick="rollRaund()">
 
-        <img src="./img/arr_l.png"  onclick="betMinus()" class="arr arr_l">
+        <img src="./img/arr_l.png" onclick="betMinus()" class="arr arr_l">
         <img src="./img/arr_r.png" onclick="betPlus()" class="arr arr_r">
         <div class="bet">
             <span>0</span>
-            <img src="./img/coin.png" alt="">
+            <img class="coin" src="./img/coin.png" alt="">
         </div>
 
-        <img src="./img/home.png" class="home" onlick="home()">
+        <img src="./img/home.png" class="home" onclick="menu()">
 
+
+        <div class="menu">
+            <div class="balace">
+                <span>
+                    0
+                </span>
+                <img class="coin" src="./img/coin.png" alt="">
+            </div>
+
+            <img src="./img/play.png" onclick="play()" alt="">
+            <img src="./img/shop.png" onclick="shop()" alt="">
+        </div>
+
+        <div class="shop">
+            <img src="./img/home.png" class="home" onclick="menu()">
+            <img src="./img/shop_back.png" class="shop_back" alt="">
+            <div class="balace">
+                <span>
+                    0
+                </span>
+                <img class="coin" src="./img/coin.png" alt="">
+            </div>
+            <div class="shop-row shop-row_f" onclick="buyYellow()">
+                <div>Saves the coefficient after losing</div>
+                <div class="buy">
+                    <div class="bonus-btn">
+                        <img src="./img/egg_y.png" alt="">
+                        <span>500</span>
+                    </div>
+                    <img class="add" src="./img/add.png" alt="">
+                </div>
+            </div>
+
+            <div class="shop-row" onclick="buyBlue()">
+                <div>Change the color of one ball</div>
+                <div class="buy">
+
+                    <div class="bonus-btn">
+                        <img src="./img/egg_b.png" alt="">
+                        <span>300</span>
+                    </div>
+                    <img class="add" src="./img/add.png" alt="">
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="terms">
+            <div class="terms-content">
+                <div class="terms-content-content">
+                    Reactor Point is a Free app. This SERVICE is provided at no cost and is intended for use as is.<br>
+                    <br>This page is used to inform visitors regarding my policies with the collection, use, and
+                    disclosure of Personal Information if anyone decided to use my Service.
+                    <br>Privacy Policy for the EU and other country users of Reactor Point and our EU and other country
+                    business partners and suppliers.
+
+                    <br>We have created this Privacy Policy statement in order to demonstrate our firm commitment to
+                    your privacy. The following discloses our information gathering and dissemination practices.
+
+                </div>
+            </div>
+            <div class="flex-row-center">
+                <img src="./img/ok_btn.png" alt="OK" class="ok" onclick="acept()">
+
+            </div>
+        </div>
 
         <div class="bonus-row">
             <div class="bonus-btn" onclick="bonus1Activate()">
@@ -49,12 +116,16 @@
             <span>
                 0
             </span>
-            <img src="./img/coin.png" alt="">
-
+            <img class="coin" src="./img/coin.png" alt="">
         </div>
     </div>
 
     <script src="./index.js"></script>
+
+    <div class="rotatescreent" style="display: none;">
+        <img src="./img/rotate.png" alt="">
+        Rotate screen
+    </div>
 </body>
 
 </html>
