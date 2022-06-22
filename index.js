@@ -40,6 +40,7 @@ class Reactor {
         this.ctx = canvas.getContext('2d');
         this.render();
         this.loadTextures();
+        this.winCoef = 1;
     }
 
     createTexture(src) {
@@ -53,7 +54,7 @@ class Reactor {
         const textures = [
             './img/p1.png',
             './img/p2.png',
-            './img/p3.png',
+            // './img/p3.png',
             './img/p4.png',
             './img/p5.png'
             // './img/p6.png',
@@ -169,6 +170,7 @@ class Reactor {
     }
 
     spin() {
+        this.clearCoef = true;
         if (this.locked) { return; }
         if (bet > balance) {
             bet = balance;
@@ -182,12 +184,7 @@ class Reactor {
         balance -= bet;
         updateBalance();
         this.locked = true;
-        if (!this.bonus1) {
-            this.updateWinCef(1);
-        } else {
-            this.bonus1 = false;
-        }
-
+        
        
         let times = 720;
         let speed = 9;
@@ -260,10 +257,18 @@ class Reactor {
                 this.checkWin();
             }, 1000);
             console.log('WIN');
+            this.clearCoef = false;
         } else {
             console.log('LOSE', checks)
             this.locked = false;
             this.bonus2 = false;
+            if (this.clearCoef) {
+                if (!this.bonus1) {
+                    this.updateWinCef(1);
+                } else {
+                    this.bonus1 = false;
+                }
+            }
         }
     }
 
